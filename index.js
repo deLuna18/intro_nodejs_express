@@ -1,31 +1,38 @@
-const express = require('express')
+const express = require('express');
 const app = express();
 const port = 3000;
 
 //Serve static files from the "public" folder
 app.use(express.static('public'));
+app.use(express.json());
 
-app.use (express.json());
 
-app.post('submit',(req, res)=> {
+app.post('/submit',(req,res )=> {
     const data = req.body;
     res.send(`Received: ${JSON.stringify(data)}`);
 });
 
-app.use((req, res, next)=>{
-    console.log(`${req.method} ${req.url}`);
-    next();
-});
-
-// Define a route for the home page
-app.get('/',(req, res)=> {
+app.get('/', (req,res)=>  {
     res.send('Hello, World!');
 });
 
-app.get('/about',(req, res)=> {
+app.get('/items', (req, res) => {
+    res.json(items);
+});
+
+const items = ['Apple','Banana','Orange'];
+
+app.post('/items', (req, res) => {
+    const newItem = req.body.item;
+    items.push(newItem);
+    res.json(items);
+});
+
+app.get('/about', (req,res) => {
     res.send('About Us');
 });
-//Start the server
+
 app.listen(port, ()=> {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Sever running at http://localhost:${port}`);
 });
+
